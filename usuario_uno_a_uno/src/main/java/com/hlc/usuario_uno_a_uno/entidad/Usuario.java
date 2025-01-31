@@ -2,15 +2,21 @@ package com.hlc.usuario_uno_a_uno.entidad;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToOne;
+
+import com.hlc.usuario_uno_a_uno.entidad.enumerado.Rol;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -28,6 +34,10 @@ public class Usuario {
     @NotBlank(message = "La contraseña no puede ser nula")
     private String password;
     
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "El rol no puede ser nulo")
+    private Rol rol;
+    
     @Valid
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private InformacionUsuario informacionUsuario;
@@ -36,10 +46,11 @@ public class Usuario {
     public Usuario() {}
     
     // Constructor con parámetros
-    public Usuario(String username, String password, InformacionUsuario informacionUsuario) {
+    public Usuario(String username, String password, InformacionUsuario informacionUsuario, Rol rol) {
         this.username = username;
         this.password = password;
         this.informacionUsuario = informacionUsuario;
+        this.rol = rol;
     }
     
     // Getters y Setters
@@ -63,7 +74,15 @@ public class Usuario {
         return password;
     }
 
-    public void setPassword(String password) {
+    public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
+	public void setPassword(String password) {
         this.password = password;
     }
 

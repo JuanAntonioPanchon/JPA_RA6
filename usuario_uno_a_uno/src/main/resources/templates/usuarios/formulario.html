@@ -47,7 +47,15 @@
                     <span th:each="error : ${#fields.errors('informacionUsuario.telefono')}" th:text="${error}"></span>
                 </div>
             </div>
-
+			
+			<!-- Campo Rol -->
+			<label for="rol" class="form-label">Tipo de Rol </label>
+			<select id="rol" name="rol" class="form-select" th:field="*{rol}">
+				<option th:value="${roles}" th:text="${roles}" th:each="rol : ${roles}"></option>
+			</select>
+			
+			
+			
             <!-- Botones -->
             <button type="submit" class="btn btn-primary">Guardar</button>
             <a th:href="@{/usuarios}" class="btn btn-secondary">Cancelar</a>

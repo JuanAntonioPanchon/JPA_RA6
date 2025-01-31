@@ -2,6 +2,7 @@ package com.hlc.usuario_uno_a_uno.controlador;
 
 import com.hlc.usuario_uno_a_uno.entidad.InformacionUsuario;
 import com.hlc.usuario_uno_a_uno.entidad.Usuario;
+import com.hlc.usuario_uno_a_uno.entidad.enumerado.Rol;
 import com.hlc.usuario_uno_a_uno.servicio.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,6 +44,7 @@ public class UsuarioControlador {
     	usuario.setInformacionUsuario(informacionUsuario); // Inicializa la relación 1:1      
 
     	model.addAttribute("usuario", usuario);
+    	model.addAttribute("roles", Rol.values());
         return VISTA_FORMULARIO;
     }
 
@@ -50,6 +52,7 @@ public class UsuarioControlador {
     public String guardarUsuario(@Valid @ModelAttribute Usuario usuario, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("usuario", usuario);
+            model.addAttribute("roles", Rol.values());
             return VISTA_FORMULARIO;
         }
 
@@ -72,6 +75,7 @@ public class UsuarioControlador {
         }
 
         model.addAttribute("usuario", usuario);
+        model.addAttribute("rol", Rol.values());
         return VISTA_FORMULARIO;
     }
     @GetMapping("/eliminar/{id}")
