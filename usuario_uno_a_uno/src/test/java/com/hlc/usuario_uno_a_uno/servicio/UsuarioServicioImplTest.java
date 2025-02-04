@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.hlc.usuario_uno_a_uno.entidad.InformacionUsuario;
 import com.hlc.usuario_uno_a_uno.entidad.Usuario;
+import com.hlc.usuario_uno_a_uno.entidad.enumerado.Rol;
 import com.hlc.usuario_uno_a_uno.repositorio.UsuarioRepositorio;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,11 +28,12 @@ class UsuarioServicioImplTest {
 
     private Usuario usuario;
     private InformacionUsuario informacionUsuario;
+    private Rol rol;
 
     @BeforeEach
     void setUp() {
         informacionUsuario = new InformacionUsuario("test@example.com", "123456789");
-        usuario = new Usuario("testuser", "testpass", informacionUsuario);
+        usuario = new Usuario("testuser", "testpass", informacionUsuario, rol);
         usuario.setId(1L);
     }
 

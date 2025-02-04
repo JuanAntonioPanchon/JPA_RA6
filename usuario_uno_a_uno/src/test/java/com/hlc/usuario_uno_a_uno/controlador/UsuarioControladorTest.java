@@ -2,6 +2,7 @@ package com.hlc.usuario_uno_a_uno.controlador;
 
 import com.hlc.usuario_uno_a_uno.entidad.InformacionUsuario;
 import com.hlc.usuario_uno_a_uno.entidad.Usuario;
+import com.hlc.usuario_uno_a_uno.entidad.enumerado.Rol;
 import com.hlc.usuario_uno_a_uno.servicio.UsuarioServicio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -39,12 +41,13 @@ public class UsuarioControladorTest {
     private UsuarioControlador usuarioControlador;
 
     private Usuario usuario;
+    private Rol rol;
     private InformacionUsuario infoUsuario;
 
     @BeforeEach
     void setUp() {
         infoUsuario = new InformacionUsuario("user@email.com", "123456789");
-        usuario = new Usuario("testuser", "password123", infoUsuario);
+        usuario = new Usuario("testuser", "password123", infoUsuario, rol);
         infoUsuario.setUsuario(usuario);
         usuario.setId(1L);
     }
@@ -94,7 +97,7 @@ public class UsuarioControladorTest {
 
     @Test
     void testGuardarUsuarioSinInformacionUsuario() {
-        Usuario usuarioSinInfo = new Usuario("user2", "password456", null);
+        Usuario usuarioSinInfo = new Usuario("user2", "password456", null, rol);
         when(bindingResult.hasErrors()).thenReturn(false);
 
         String view = usuarioControlador.guardarUsuario(usuarioSinInfo, bindingResult, model);
@@ -147,10 +150,8 @@ public class UsuarioControladorTest {
     void testBuscarUsuarios() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Usuario> usuarios = new PageImpl<>(Arrays.asList(usuario));
-        when(usuarioServicio.buscarPorNombre("test", pageable)).thenReturn(usuarios);
-
-        String view = usuarioControlador.buscarUsuarios("test", 0, 10, model);
-
+        when(usuarioServicio.buscarPorRol(Rol.MANAGER, pageable)).thenReturn(usuarios);
+        String view = usuarioControlador.buscarUsuarios("test","MANAGER",0, 10, model);
         assertEquals("usuarios/listar", view);
         verify(model).addAttribute("usuarios", usuarios);
         verify(model).addAttribute("currentPage", 0);

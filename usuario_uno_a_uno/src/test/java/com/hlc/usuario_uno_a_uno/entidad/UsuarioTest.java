@@ -8,16 +8,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.hlc.usuario_uno_a_uno.entidad.enumerado.Rol;
+
 class UsuarioTest {
 
     
     private Usuario usuario;
     private InformacionUsuario informacionUsuario;
+    private Rol rol;
     
     @BeforeEach
     void setUp() {
         informacionUsuario = new InformacionUsuario("test@email.com", "12345678");
-        usuario = new Usuario("testuser", "password", informacionUsuario);
+        usuario = new Usuario("testuser", "password", informacionUsuario, rol);
         informacionUsuario.setUsuario(usuario);
     }
     

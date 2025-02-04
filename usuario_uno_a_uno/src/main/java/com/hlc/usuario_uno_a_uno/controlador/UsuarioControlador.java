@@ -4,6 +4,11 @@ import com.hlc.usuario_uno_a_uno.entidad.InformacionUsuario;
 import com.hlc.usuario_uno_a_uno.entidad.Usuario;
 import com.hlc.usuario_uno_a_uno.entidad.enumerado.Rol;
 import com.hlc.usuario_uno_a_uno.servicio.UsuarioServicio;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +39,7 @@ public class UsuarioControlador {
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", usuarios.getTotalPages());
+        model.addAttribute("roles", Rol.values());
         return "usuarios/listar";
     }
 
@@ -84,17 +90,38 @@ public class UsuarioControlador {
         return REDIRECT_LISTADO;
     }
 
+    
     @GetMapping("/buscar")
-    public String buscarUsuarios(@RequestParam String nombre,
+    public String buscarUsuarios(@RequestParam(name = "nombre", required = false) String nombre,
+                                 @RequestParam(name = "rol", required = false) String rolNombre,
                                  @RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "10") int size,
                                  Model model) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Usuario> usuarios = usuarioServicio.buscarPorNombre(nombre, pageable);
+        Page<Usuario> usuarios;
+
+        if ((nombre == null || nombre.isEmpty()) && (rolNombre == null || rolNombre.isEmpty())) {
+            usuarios = usuarioServicio.listarUsuariosPaginados(pageable);
+        } else if (rolNombre != null && !rolNombre.isEmpty()) {
+            try {
+                Rol rol = Rol.valueOf(rolNombre);
+                usuarios = usuarioServicio.buscarPorRol(rol, pageable);
+            } catch (IllegalArgumentException e) {
+                usuarios = Page.empty();
+            }
+        } else {
+            usuarios = usuarioServicio.buscarPorNombre(nombre, pageable);
+        }
+
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", usuarios.getTotalPages());
         model.addAttribute("nombre", nombre);
+        model.addAttribute("roles", Rol.values());
+        model.addAttribute("rolSeleccionado", rolNombre); // Mantener seleccionado el rol
+
         return "usuarios/listar";
     }
+    
+    
 }
