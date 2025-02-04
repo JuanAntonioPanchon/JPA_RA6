@@ -51,9 +51,8 @@
 			<!-- Campo Rol -->
 			<label for="rol" class="form-label">Tipo de Rol </label>
 			<select id="rol" name="rol" class="form-select" th:field="*{rol}">
-				<option th:value="${roles}" th:text="${roles}" th:each="rol : ${roles}"></option>
+				<option th:value="${rol}" th:text="${rol}" th:each="rol : ${roles}"></option>
 			</select>
-			
 			
 			
             <!-- Botones -->

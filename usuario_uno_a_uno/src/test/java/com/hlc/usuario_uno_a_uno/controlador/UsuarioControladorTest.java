@@ -2,6 +2,7 @@ package com.hlc.usuario_uno_a_uno.controlador;
 
 import com.hlc.usuario_uno_a_uno.entidad.InformacionUsuario;
 import com.hlc.usuario_uno_a_uno.entidad.Usuario;
+import com.hlc.usuario_uno_a_uno.entidad.enumerado.Rol;
 import com.hlc.usuario_uno_a_uno.servicio.UsuarioServicio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,11 +41,12 @@ public class UsuarioControladorTest {
 
     private Usuario usuario;
     private InformacionUsuario infoUsuario;
+    private Rol rol;
 
     @BeforeEach
     void setUp() {
         infoUsuario = new InformacionUsuario("user@email.com", "123456789");
-        usuario = new Usuario("testuser", "password123", infoUsuario);
+        usuario = new Usuario("testuser", "password123", infoUsuario, rol);
         infoUsuario.setUsuario(usuario);
         usuario.setId(1L);
     }
@@ -94,7 +96,7 @@ public class UsuarioControladorTest {
 
     @Test
     void testGuardarUsuarioSinInformacionUsuario() {
-        Usuario usuarioSinInfo = new Usuario("user2", "password456", null);
+        Usuario usuarioSinInfo = new Usuario("user2", "password456", null, rol);
         when(bindingResult.hasErrors()).thenReturn(false);
 
         String view = usuarioControlador.guardarUsuario(usuarioSinInfo, bindingResult, model);
@@ -147,16 +149,19 @@ public class UsuarioControladorTest {
     void testBuscarUsuarios() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Usuario> usuarios = new PageImpl<>(Arrays.asList(usuario));
-        when(usuarioServicio.buscarPorNombre("test", pageable)).thenReturn(usuarios);
 
-        String view = usuarioControlador.buscarUsuarios("test", 0, 10, model);
+        when(usuarioServicio.buscarPorRol(Rol.ADMIN, pageable)).thenReturn(usuarios);
+
+        String view = usuarioControlador.buscarUsuarios("test", "ADMIN", 0, 10, model);
 
         assertEquals("usuarios/listar", view);
+
         verify(model).addAttribute("usuarios", usuarios);
         verify(model).addAttribute("currentPage", 0);
         verify(model).addAttribute("totalPages", usuarios.getTotalPages());
         verify(model).addAttribute("nombre", "test");
     }
+
 
 }
 
