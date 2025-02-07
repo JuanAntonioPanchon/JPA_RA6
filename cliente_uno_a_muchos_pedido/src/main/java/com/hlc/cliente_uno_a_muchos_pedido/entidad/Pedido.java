@@ -1,6 +1,7 @@
 package com.hlc.cliente_uno_a_muchos_pedido.entidad;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -38,18 +40,25 @@ public class Pedido {
 	@ManyToOne
 	private Cliente cliente;
 	
+	@ManyToMany(mappedBy = "pedidos")
+	private List<Producto> productos;
+	
+	
+	
     public Pedido() {}
 
 
 	public Pedido(Long id, @Past LocalDateTime fecha, @NotBlank @NotNull String descripcion, @NotNull Integer cantidad,
-			Cliente cliente) {
+			Cliente cliente, List<Producto> productos) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
 		this.descripcion = descripcion;
 		this.cantidad = cantidad;
 		this.cliente = cliente;
+		this.productos = productos;
 	}
+
 
 
 	public Long getId() {
@@ -90,6 +99,16 @@ public class Pedido {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+
+	public List<Producto> getProductos() {
+		return productos;
+	}
+
+
+	public void setProductos(List<Producto> productos) {
+		this.productos = productos;
 	}
 	
 	

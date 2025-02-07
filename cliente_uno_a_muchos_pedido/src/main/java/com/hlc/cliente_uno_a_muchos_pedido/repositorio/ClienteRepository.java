@@ -7,5 +7,5 @@ import com.hlc.cliente_uno_a_muchos_pedido.entidad.Cliente;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long>  {
-
+	
 }
