@@ -10,6 +10,7 @@ import com.hlc.cliente_uno_a_muchos_pedido.entidad.Pedido;
 import com.hlc.cliente_uno_a_muchos_pedido.excepcion.RecursoNoEncontradoException;
 import com.hlc.cliente_uno_a_muchos_pedido.repositorio.PedidoRepository;
 
+
 @Service
 public class PedidoServicioImpl implements PedidoServicio {
 
@@ -17,6 +18,7 @@ public class PedidoServicioImpl implements PedidoServicio {
     private PedidoRepository pedidoRepository;
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public Pedido guardarPedido(Pedido pedido) {
         return pedidoRepository.save(pedido);
     }

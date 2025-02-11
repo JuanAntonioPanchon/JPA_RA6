@@ -11,11 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.hlc.cliente_uno_a_muchos_pedido.entidad.Cliente;
-import com.hlc.cliente_uno_a_muchos_pedido.entidad.Pedido;
 import com.hlc.cliente_uno_a_muchos_pedido.entidad.Producto;
-import com.hlc.cliente_uno_a_muchos_pedido.servicio.ClienteServicio;
 import com.hlc.cliente_uno_a_muchos_pedido.servicio.PedidoServicio;
 import com.hlc.cliente_uno_a_muchos_pedido.servicio.ProductoServicio;
 
