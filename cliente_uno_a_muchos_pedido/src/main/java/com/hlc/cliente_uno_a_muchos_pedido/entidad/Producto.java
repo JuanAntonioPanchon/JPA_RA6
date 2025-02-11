@@ -33,9 +33,11 @@ public class Producto {
 	private int stock;
 
 	@ManyToMany
-	@JoinTable(name = "producto_pedido", joinColumns = @JoinColumn(name="producto_id"),
-	inverseJoinColumns = @JoinColumn(name="pedido_id"))
-	private List <Pedido> pedidos;
+    @JoinTable(
+    name = "producto_pedido",
+    joinColumns = @JoinColumn(name="producto_id"),
+    inverseJoinColumns = @JoinColumn(name="pedido_id"))
+    private List <Pedido> pedidos;
 	
 	
 	

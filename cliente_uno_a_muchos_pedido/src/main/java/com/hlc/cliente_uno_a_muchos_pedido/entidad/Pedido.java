@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -40,9 +41,13 @@ public class Pedido {
 	@ManyToOne
 	private Cliente cliente;
 	
-	@ManyToMany(mappedBy = "pedidos")
-	private List<Producto> productos;
-	
+	@ManyToMany
+    @JoinTable(
+        name = "producto_pedido",
+        joinColumns = @JoinColumn(name = "pedido_id"),
+        inverseJoinColumns = @JoinColumn(name = "producto_id")
+    )
+    private List<Producto> productos;
 	
 	
     public Pedido() {}
